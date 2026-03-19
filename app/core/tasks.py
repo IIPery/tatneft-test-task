@@ -16,4 +16,4 @@ def create_fake_report():
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(report_content)
 
-    return f"fake_report обновлен!"
+    return "fake_report обновлен!"

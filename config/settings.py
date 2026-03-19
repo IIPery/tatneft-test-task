@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import load_dotenv
 from pathlib import Path
 from celery.schedules import crontab
@@ -143,3 +144,18 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+if 'pytest' in sys.modules or 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'ATOMIC_REQUESTS': False,
+        }
+    }
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
+    CELERY_TASK_ALWAYS_EAGER = True
