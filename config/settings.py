@@ -1,10 +1,14 @@
+import os
+import dj_database_url
+from dotenv import load_dotenv
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
-SECRET_KEY = 'django-insecure-(_r3xv&nzipzu9ga+@=yaue-&m#5*met=fdepx4@xzlep#x8#-'
 
-DEBUG = True
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -59,12 +63,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+db_url = os.getenv('DATABASE_URL')
+
 DATABASES = {
-    'default': {
+    'default': dj_database_url.config(
+        default=db_url,
+        conn_max_age=600
+    )
+}
+
+if not DATABASES['default'].get('ENGINE'):
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
