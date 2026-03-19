@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from app.core.models import Tag, Metric, MetricRecord
+from app.core.models import Metric, MetricRecord, Tag
 
 
 @admin.register(Tag)
@@ -11,12 +11,12 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Metric)
 class MetricAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "name", "description",)
+    list_display = ("id", "user", "name", "description")
     search_fields = ("user", "name", "description")
 
 
 @admin.register(MetricRecord)
 class MetricRecordAdmin(admin.ModelAdmin):
-    list_display = ("id", "metric__name", "value", "timestamp",)
+    list_display = ("id", "metric__name", "value", "timestamp")
     search_fields = ("metric__name", "value", "timestamp")
     list_filter = ("tags",)

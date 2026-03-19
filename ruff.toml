@@ -1,0 +1,96 @@
+preview = true
+
+line-length = 120
+indent-width = 4
+target-version = 'py312'
+
+exclude = [
+    ".cache",
+    ".venv",
+    "venv",
+    "migrations",
+    "manage.py",
+    "__init__.py",
+]
+
+[lint]
+select = [  # https://docs.astral.sh/ruff/rules/
+    "F",  # pyflakes
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "I",  # isort
+    "Q",  # quotes
+    "TID",  # tidy imports
+    "ANN",  # annotations
+    "DJ",  # django
+    "T20",  # print
+    "B",  # bugbear
+    "SIM",  # simplify,
+    "ISC002",  # implicit-str-concat
+    "ISC003",
+    "UP",    # pyupgrade
+    "C4",    # comprehensions
+    "ISC",   # implicit string concat
+    "S",     # bandit (security)
+    "T10",   # debugger (pdb/ipdb)
+    "PT",    # pytest style
+    "RUF",   # ruff-specific rules
+    "FURB",  # refurb (code modernization)
+    "N",     # pep8-naming
+    "RET",   # return statements consistency
+    "RSE",   # raise statements
+    "PTH",   # prefer pathlib over os.path
+    "PIE",   # flake8-pie correctness rules
+    "PERF",  # perflint performance hints
+    "TC",   # typing-only imports handling
+    "COM",   # flake8-commas (trailing commas)
+    "ARG",   # flake8-arguments (unused arguments)
+]
+
+ignore = [
+    "ANN401",
+    "B904",
+    "DJ008",
+    "DJ001",     # avoid using null=True on string-based fields
+    "S104",
+    "S105",
+    "S107",
+    "S603",
+    "S605",
+    "S404",
+    "S607",
+    "RUF001",    # ambiguous unicode character in string: Cyrillic vs Latin
+    "RUF002",    # ambiguous unicode character in docstring: Cyrillic
+    "RUF003",    # ambiguous unicode character in comment
+    "PTH118",    # os.path.join (pathlib not always better)
+    "COM812",    # trailing comma missing
+    "ARG002",    # unused method argument
+    "ARG005",    # unused lambda argument
+]
+
+[lint.flake8-quotes]
+inline-quotes = "double"
+
+[format]
+quote-style = "double"
+
+[lint.isort]
+split-on-trailing-comma = true
+
+[lint.mccabe]
+max-complexity = 10
+
+[lint.flake8-bandit]
+check-typed-exception = true
+
+[lint.per-file-ignores]
+"tests/**" = [
+    "S101",      # use of assert detected (pytest)
+    "ARG001",    # unused arguments in tests/fixtures
+    "TC001",     # typing-only import suggestions
+    "TC002",
+    "TC003",
+    "S106",      # hardcoded password in tests
+    "S405",      # xml.etree warnings in tests
+]
+

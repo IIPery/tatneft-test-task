@@ -1,15 +1,17 @@
-from django.core.management.base import BaseCommand
-from django.contrib.auth import get_user_model
-from app.core.models import Tag, Metric, MetricRecord
 import random
+
+from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
+
+from app.core.models import Metric, MetricRecord, Tag
 
 User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "Создает суперпользователя и начальные тестовые данные"
+    help = "Создает пользователей и начальные тестовые данные"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: tuple, **kwargs: dict) -> None:
         admin_user, created = User.objects.get_or_create(username="admin")
         if created:
             admin_user.set_password("admin")
@@ -36,19 +38,14 @@ class Command(BaseCommand):
         for user in users:
             for m_name in metric_names:
                 metric_obj, created = Metric.objects.get_or_create(
-                    user=user,
-                    name=m_name,
-                    defaults={'description': f"Описание для {m_name}"}
+                    user=user, name=m_name, defaults={"description": f"Описание для {m_name}"}
                 )
                 created_metric_objects.append(metric_obj)
 
         for m_obj in created_metric_objects:
             if not m_obj.records.exists():
-                for i in range(5):
-                    record = MetricRecord.objects.create(
-                        metric=m_obj,
-                        value=random.uniform(10.0, 100.0)
-                    )
-                    record.tags.add(random.choice(tag_objs))
+                for _ in range(5):
+                    record = MetricRecord.objects.create(metric=m_obj, value=random.uniform(10.0, 100.0))  # noqa: S311
+                    record.tags.add(random.choice(tag_objs))  # noqa: S311
 
         self.stdout.write(self.style.SUCCESS("Юзеры, тестовые метрики и записи созданы"))
